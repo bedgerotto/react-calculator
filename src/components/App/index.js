@@ -10,21 +10,23 @@ import ButtonOperation from '../ButtonOperation';
 function App() {
   const [displayNumber, setDisplayNumber] = useState('0');
   const [storedNumber, setStoredNumber] = useState('');
+  const [lastNumber, setLastNumber] = useState('');
   const [operation, setOperation] = useState('');
   const [reset, setReset] = useState(false);
 
-  const handleSetDisplayNumber = (numberString) => {
-    if (numberString === '.' && displayNumber.indexOf('.') > -1) {
-      return;
-    }
+  const updateDisplayNumber = (number) => {
+    setLastNumber(number)
+    setDisplayNumber(number);
+  }
 
+  const handleSetDisplayNumber = (numberString) => {
     if ((reset || displayNumber.toString() === '0') && numberString !== '.') {
       setReset(false);
 
-      return setDisplayNumber(numberString)
+      return updateDisplayNumber(numberString)
     }
 
-    return setDisplayNumber(`${displayNumber}${numberString}`)
+    return updateDisplayNumber(`${displayNumber}${numberString}`)
   }
 
   const handleFloatPont = (point) => {
@@ -36,13 +38,17 @@ function App() {
   const handlePercentOperation = () => {
     const percentage = (Number(displayNumber) / 100).toString();
 
+    if (operation) {
+      return setLastNumber((storedNumber * displayNumber) / 100);
+    }
+
     return setDisplayNumber(percentage);
   }
 
   const handleInverseSignOperation = () => {
     const inverseNumber = (Number(displayNumber) * -1).toString();
 
-    return setDisplayNumber(inverseNumber);
+    return updateDisplayNumber(inverseNumber);
   }
 
   const handleOperations = (currentOperation) => {
@@ -61,16 +67,18 @@ function App() {
       const result = calculate();
 
       setDisplayNumber(result);
+      setStoredNumber(result);
+      setReset(true);
       return result;
     }
   }
 
   const calculate = () => {
     const operations = {
-      '+': () => Number(storedNumber) + Number(displayNumber),
-      '-': () => Number(storedNumber) - Number(displayNumber),
-      'x': () => Number(storedNumber) * Number(displayNumber),
-      '÷': () => Number(storedNumber) / Number(displayNumber),
+      '+': () => Number(storedNumber) + Number(lastNumber),
+      '-': () => Number(storedNumber) - Number(lastNumber),
+      'x': () => Number(storedNumber) * Number(lastNumber),
+      '÷': () => Number(storedNumber) / Number(lastNumber),
     }
 
     return operations[operation].apply();
@@ -79,6 +87,7 @@ function App() {
   const handleAllClearOperation = () => {
     setOperation('')
     setStoredNumber('')
+    setLastNumber('')
     setReset(false)
 
     return setDisplayNumber('0')
