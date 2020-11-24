@@ -1,9 +1,8 @@
 function Button(props) {
-  const color = props.type === "operation" ? 'orange' : '';
-  const className = `button ${color} ${props.size}`
+  const className = `button ${props.backgroundColor} ${props.size}`
 
   const handleClick = () => {
-    if ( props.type === "operation" ) {
+    if ( !props.onButtonClick ) {
       return;
     }
     return props.onButtonClick(props.text.toString())
