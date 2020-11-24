@@ -1,5 +1,7 @@
+import './index.css';
+
 function Button(props) {
-  const className = `button ${props.backgroundColor} ${props.size}`
+  const className = `button ${props.backgroundColor || ''} ${props.size || ''}`.trim();
 
   const handleClick = () => {
     if ( !props.onButtonClick ) {

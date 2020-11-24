@@ -4,7 +4,8 @@ import { useState } from 'react';
 
 import Display from '../Dispay';
 import ButtonPanel from '../ButtonPannel';
-import Button from '../Button';
+import ButtonNumber from '../ButtonNumber';
+import ButtonOperation from '../ButtonOperation';
 
 function App() {
   const [displayNumber, setDisplayNumber] = useState('0');
@@ -17,7 +18,7 @@ function App() {
       return;
     }
 
-    if (reset || displayNumber.toString() === '0') {
+    if ((reset || displayNumber.toString() === '0') && numberString !== '.') {
       setReset(false);
 
       return setDisplayNumber(numberString)
@@ -28,7 +29,7 @@ function App() {
 
   const handleFloatPont = (point) => {
     if (displayNumber.indexOf(point) === -1) {
-      handleSetDisplayNumber(point);
+      return handleSetDisplayNumber(point);
     }
   }
 
@@ -44,9 +45,14 @@ function App() {
     return setDisplayNumber(inverseNumber);
   }
 
-  const handleOperations = (operation) => {
-    setOperation(operation);
-    setStoredNumber(displayNumber);
+  const handleOperations = (currentOperation) => {
+    if (operation) {
+      setStoredNumber(handleEqualOperation());
+    } else {
+      setStoredNumber(displayNumber);
+    }
+
+    setOperation(currentOperation);
     setReset(true);
   }
 
@@ -54,7 +60,8 @@ function App() {
     if (storedNumber && operation && displayNumber) {
       const result = calculate();
 
-      return setDisplayNumber(result);
+      setDisplayNumber(result);
+      return result;
     }
   }
 
@@ -73,6 +80,7 @@ function App() {
     setOperation('')
     setStoredNumber('')
     setReset(false)
+
     return setDisplayNumber('0')
   }
 
@@ -82,33 +90,33 @@ function App() {
       <Display displayNumber={displayNumber} />
       <ButtonPanel>
         <div>
-          <Button type="operation" onButtonClick={handleAllClearOperation} text="AC" />
-          <Button type="operation" onButtonClick={handleInverseSignOperation} text="+/-" />
-          <Button type="operation" onButtonClick={handlePercentOperation} text="%" />
-          <Button type="operation" onButtonClick={handleOperations} backgroundColor="orange" text="÷" />
+          <ButtonOperation onButtonClick={handleAllClearOperation} text="AC" />
+          <ButtonOperation onButtonClick={handleInverseSignOperation} text="+/-" />
+          <ButtonOperation onButtonClick={handlePercentOperation} text="%" />
+          <ButtonOperation onButtonClick={handleOperations} text="÷" />
         </div>
         <div>
-          <Button type="number" onButtonClick={handleSetDisplayNumber} text="7" />
-          <Button type="number" onButtonClick={handleSetDisplayNumber} text="8" />
-          <Button type="number" onButtonClick={handleSetDisplayNumber} text="9" />
-          <Button type="operation" onButtonClick={handleOperations} backgroundColor="orange" text="x" />
+          <ButtonNumber onButtonClick={handleSetDisplayNumber} text="7" />
+          <ButtonNumber onButtonClick={handleSetDisplayNumber} text="8" />
+          <ButtonNumber onButtonClick={handleSetDisplayNumber} text="9" />
+          <ButtonOperation onButtonClick={handleOperations} text="x" />
         </div>
         <div>
-          <Button type="number" onButtonClick={handleSetDisplayNumber} text="4" />
-          <Button type="number" onButtonClick={handleSetDisplayNumber} text="5" />
-          <Button type="number" onButtonClick={handleSetDisplayNumber} text="6" />
-          <Button type="operation" onButtonClick={handleOperations} backgroundColor="orange" text="-" />
+          <ButtonNumber onButtonClick={handleSetDisplayNumber} text="4" />
+          <ButtonNumber onButtonClick={handleSetDisplayNumber} text="5" />
+          <ButtonNumber onButtonClick={handleSetDisplayNumber} text="6" />
+          <ButtonOperation onButtonClick={handleOperations} text="-" />
         </div>
         <div>
-          <Button type="number" onButtonClick={handleSetDisplayNumber} text="1" />
-          <Button type="number" onButtonClick={handleSetDisplayNumber} text="2" />
-          <Button type="number" onButtonClick={handleSetDisplayNumber} text="3" />
-          <Button type="operation" onButtonClick={handleOperations} backgroundColor="orange" text="+" />
+          <ButtonNumber onButtonClick={handleSetDisplayNumber} text="1" />
+          <ButtonNumber onButtonClick={handleSetDisplayNumber} text="2" />
+          <ButtonNumber onButtonClick={handleSetDisplayNumber} text="3" />
+          <ButtonOperation onButtonClick={handleOperations} text="+" />
         </div>
         <div>
-          <Button type="number" onButtonClick={handleSetDisplayNumber} size="wide" text="0" />
-          <Button type="number" onButtonClick={handleFloatPont} text="." />
-          <Button type="operation" onButtonClick={handleEqualOperation} text="=" />
+          <ButtonNumber onButtonClick={handleSetDisplayNumber} text="0" />
+          <ButtonNumber onButtonClick={handleFloatPont} text="." />
+          <ButtonOperation onButtonClick={handleEqualOperation} text="=" />
         </div>
       </ButtonPanel>
     </div>
