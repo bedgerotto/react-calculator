@@ -1,23 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <div className="display">
+        <div>0</div>
+      </div>
+      <div className="button-panel">
+        <div>
+          <div className="button"><button>AC</button></div>
+          <div className="button"><button>+/-</button></div>
+          <div className="button"><button>%</button></div>
+          <div className="button orange"><button>÷</button></div>
+        </div>
+        <div>
+          <div className="button"><button>7</button></div>
+          <div className="button"><button>8</button></div>
+          <div className="button"><button>9</button></div>
+          <div className="button orange"><button>x</button></div>
+        </div>
+        <div>
+          <div className="button"><button>4</button></div>
+          <div className="button"><button>5</button></div>
+          <div className="button"><button>6</button></div>
+          <div className="button orange"><button>-</button></div>
+        </div>
+        <div>
+          <div className="button"><button>1</button></div>
+          <div className="button"><button>2</button></div>
+          <div className="button"><button>3</button></div>
+          <div className="button orange"><button>+</button></div>
+        </div>
+        <div>
+          <div className="button  wide"><button>0</button></div>
+          <div className="button"><button>.</button></div>
+          <div className="button orange"><button>=</button></div>
+        </div>
+      </div>
     </div>
   );
 }
